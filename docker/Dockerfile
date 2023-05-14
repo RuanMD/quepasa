@@ -3,8 +3,8 @@ FROM golang:1.20.2 as builder
 
 WORKDIR /build
 
-COPY /docker/docker-entrypoint.sh .
-COPY /src/ .
+COPY docker/docker-entrypoint.sh .
+COPY src/ .
 
 RUN chmod 755 docker-entrypoint.sh
 RUN go build -o service main.go
@@ -14,7 +14,7 @@ FROM golang:1.20.2 as src
 
 WORKDIR /opt/quepasa/
 
-COPY --from=builder /build/. /builder/
+COPY --from=builder /build/. /opt/quepasa/
 COPY --from=builder /build/docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
